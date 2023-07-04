@@ -54,6 +54,9 @@ class TreePage extends Model
           if ($model->is_home == true) {
             $model->parent_id = -1;
           }
+          if (!$model->site_id) {
+            $model->site_id = $model->ParentNode->site_id;
+          }
           if (!$model->slug) {
             $model->slug = "/" . Str::slug($model->title);
           }

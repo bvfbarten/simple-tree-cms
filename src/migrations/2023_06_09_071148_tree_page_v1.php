@@ -17,7 +17,7 @@ return new class extends Migration
       Schema::connection('simple_cms')->create('tree_pages', function (Blueprint $table) {
         $table->id();
         $table->treeColumns();
-        $table->boolean('is_home');
+        $table->boolean('is_home')->default(0);
         $table->integer('site_id');
         $table->dateTime('activation_date')->nullable();
         $table->dateTime('deactivation_date')->nullable();

@@ -44,7 +44,7 @@ class SimpleCmsServiceProvider extends PluginServiceProvider
     $this->loadMigrationsFrom(__DIR__.'/migrations/2023_06_09_071148_tree_page_v1.php');
     if ($this->app->runningInConsole()) {
       $this->publishes([
-        __DIR__.'../config/simple-cms-config.php' => config_path('simple-cms-config.php'),
+        __DIR__.'/config/simple-cms-config.php' => config_path('simple-cms-config.php'),
       ], 'simple-cms-config');
 
     }
