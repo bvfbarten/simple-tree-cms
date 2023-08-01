@@ -41,11 +41,16 @@ class SimpleCmsServiceProvider extends PluginServiceProvider
   public function boot()
   {
     parent::boot();
-    $this->loadMigrationsFrom(__DIR__.'/migrations/2023_06_09_071148_tree_page_v1.php');
+    $this->loadViewsFrom(__DIR__.'/resources/views/', 'simplecms');
     if ($this->app->runningInConsole()) {
+      $this->loadMigrationsFrom(__DIR__.'/migrations/2023_06_09_071148_tree_page_v1.php');
       $this->publishes([
         __DIR__.'/config/simple-cms-config.php' => config_path('simple-cms-config.php'),
       ], 'simple-cms-config');
+      $this->publishes([
+        __DIR__.'/content/' => base_path('/content/'),
+        __DIR__.'/Filament/' => base_path('/Filament/'),
+      ], 'simple-cms-content');
 
     }
 

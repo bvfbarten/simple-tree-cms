@@ -119,8 +119,8 @@ class TreePageResource extends Resource
     return $table
       ->columns([
         TextColumn::make('title'),
-        Tables\Columns\TextColumn::make('fullPath')->sortable(),
-        Tables\Columns\TextColumn::make('updated_at')->dateTime('d.m.Y, H:i')->sortable(),
+        TextColumn::make('fullPath')->sortable(),
+        TextColumn::make('template')->sortable(),
         TextColumn::make('ParentNode.fullPath'),
         TextColumn::make('order'),
       ])

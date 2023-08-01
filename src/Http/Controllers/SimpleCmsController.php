@@ -2,8 +2,7 @@
 
 namespace Bvfbarten\SimpleCms\Http\Controllers;
 
-
-use Bvfbarten\SimpleCms\Models\Site;
+use Bvfbarten\SimpleCms\Models\TreePage;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -14,11 +13,13 @@ class SimpleCmsController extends Controller
 {
     //
   public function show(Request $request) {
-    $page = Site::findByPath($request->server('SERVER_NAME'), $request->path());
-    if (!$page) {
-      throw new NotFoundHttpException();
+    $page = TreePage::findByPath($request->path());
+    if ($page) {
+      $templateName = 'simplecms::' . Str::slug(($page->template)::title());
+      if(View::exists($templateName) || config('simple-cms-config.show_templates')) {
+        return view($templateName, compact('page'));
+      } 
     }
-    $templateName = 'templates.' . Str::slug(($page->template)::title());
-    return view($templateName, compact('page'));
+    throw new NotFoundHttpException();
   }
 }

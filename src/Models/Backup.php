@@ -48,17 +48,27 @@ class Backup extends Model
       if ($id) {
         $id = "==={$id}";
       }
-      return str_replace('\\', '-', $model) . $id;
+      $rtn = str_replace('\\', '-', $model) . $id;
+      $rtn = str_replace('Bvfbarten-SimpleCms-Models-', '', $rtn);
+      return $rtn;
     }
     /*
     public function getcontentAttribute() {
       return Yaml::parse($this->attributes['content']);
     }
      */
-    public static function dumpModel($modelName) {
+    public static function dumpModel($modelName, $forced = false) {
       global $saved;
       $saved = [];
-      $modelName::chunk(100, function($models) {
+      if ($forced) {
+        self::where('slug', 'like', self::getSluggedClass($modelName) . '===%')
+          ->chunk(100, function($deletable){
+            foreach($deletable as $item) {
+              $item->delete();
+            }
+          });
+      }
+      "{$modelName}"::chunk(100, function($models) {
         global $saved;
         foreach($models as $model) {
           $newModel = new self;
@@ -67,7 +77,7 @@ class Backup extends Model
           if ($checkModel = self::find($newModel->slug)) {
             $newModel = $checkModel;
           }
-          $newModel->content = Yaml::dump($model->toDump());
+          $newModel->content = Yaml::dump($model->toDump(), 10, 2);
           $newModel->save();
           $saved[] = $newModel->slug;  
         }

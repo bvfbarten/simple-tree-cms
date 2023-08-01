@@ -3,6 +3,7 @@
 namespace Bvfbarten\SimpleCms\Console\Commands;
 
 use Bvfbarten\SimpleCms\Models\Backup;
+use Bvfbarten\SimpleCms\Models\Domain;
 use Bvfbarten\SimpleCms\Models\Site;
 use Bvfbarten\SimpleCms\Models\TreePage;
 use Illuminate\Console\Command;
@@ -14,7 +15,7 @@ class ModelToDump extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:to-dump';
+    protected $signature = 'cms:to-dump {--force}';
 
     /**
      * The console command description.
@@ -31,9 +32,10 @@ class ModelToDump extends Command
       $models = [
         Site::class,
         TreePage::class,
+        Domain::class,
       ];
       foreach($models as $model) {
-        Backup::dumpModel($model);
+        Backup::dumpModel($model, $force = $this->option('force'));
       }
     }
 }

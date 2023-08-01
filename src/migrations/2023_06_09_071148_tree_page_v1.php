@@ -26,11 +26,16 @@ return new class extends Migration
         $table->json('content')->nullable();
         $table->timestamps();
       });       //
+      Schema::connection('simple_cms')->create('domains', function (Blueprint $table) {
+        $table->id();
+        $table->string('value');
+        $table->boolean('is_primary')->default(0);
+        $table->integer('site_id');
+        $table->timestamps();
+      });
       Schema::connection('simple_cms')->create('sites', function (Blueprint $table) {
         $table->id();
         $table->string('title');
-        $table->string('domain');
-        $table->json('alternative_domains')->nullable();
         $table->timestamps();
       });
     }
@@ -42,6 +47,7 @@ return new class extends Migration
     {
         //
       Schema::connection('simple_cms')->dropIfExists('tree_pages');
+      Schema::connection('simple_cms')->dropIfExists('domains');
       Schema::connection('simple_cms')->dropIfExists('sites');
     }
 };

@@ -6,7 +6,9 @@ use Bvfbarten\SimpleCms\Filament\Resources\SiteResource\Pages;
 use Bvfbarten\SimpleCms\Filament\Resources\SiteResource\RelationManagers;
 use Bvfbarten\SimpleCms\Filament\Resources\SiteResource\RelationManagers\TreePagesRelationManager;
 use Bvfbarten\SimpleCms\Models\Site;
+use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -28,16 +30,29 @@ class SiteResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title'),                //
-                TextInput::make('domain'),                //
-                Repeater::make('alternative_domains')
-            ->schema([
-                TextInput::make('domain')
-                    ->placeholder('Enter domain')
-                    ->required()
-            ])
-            ->label('Alternative domain')
-            ->helperText('Add alternative domain for the resource.'),
+              TextInput::make('title')
+                ->columnSpanFull(),                //
+              Repeater::make('Domain')
+                ->columnSpanFull()
+                ->schema([
+                  TextInput::make('value'),
+                  Hidden::make('is_primary')
+                  ->default(true)
+                ])
+                ->minItems(1)
+                ->maxItems(1)
+                ->relationship(),                //
+              Repeater::make('AlternativeDomains')
+                ->columnSpanFull()
+                ->schema([
+                  TextInput::make('value')
+                    ->placeholder('Enter domain'),
+                  Hidden::make('is_primary')
+                  ->default(false)
+                ])
+                ->relationship()
+                ->label('Alternative domain')
+                ->helperText('Add alternative domain for the resource.'),
             ]);
     }
 
@@ -46,7 +61,7 @@ class SiteResource extends Resource
         return $table
             ->columns([
               TextColumn::make('title'),
-              TextColumn::make('domain')
+              TextColumn::make('Domain.value')
             ])
             ->filters([
                 //

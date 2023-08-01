@@ -2,6 +2,7 @@
 
 namespace App\Filament\PageTemplates;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
@@ -13,10 +14,21 @@ final class Home
         return 'Home';
     }
 
+    public static function retreivedEvent($data) {
+      //dd($data);
+    }
     public static function schema()
     {
         return [
-          RichEditor::make('content')
+          Repeater::make('sections')
+            ->schema([
+              TextInput::make('title'),
+              FileUpload::make('image')
+                ->storeFileNamesIn('image_name')
+                ->image()
+                ->directory('images/'),
+            RichEditor::make('content')
+            ])
         ];
     }
 }
