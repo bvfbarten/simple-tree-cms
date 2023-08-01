@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Validator;
+use App\Filament\PageTemplates\Contact;
 
 function controller($controller, $page) {
   if (request()->method() == 'POST') {
@@ -10,8 +11,8 @@ function controller($controller, $page) {
       'description' => ''
     ])) {
       $newPage = $page->newTreePage(Contact::class);
-      $page->set($validatedData);
-      $page->save();
+      $newPage->set($validatedData);
+      $newPage->save();
       return redirect('/')->with('status', 'Contact Submitted!');
     }
   }
