@@ -1,6 +1,6 @@
 <?php
 
-namespace Bvfbarten\SimpleCms\Filament\PageTemplates;
+namespace App\Filament\PageTemplates;
 
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;

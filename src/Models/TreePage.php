@@ -46,6 +46,19 @@ class TreePage extends Model
     return $this;
    
   }
+  public function newTreePage($template) {
+    $tp = new TreePage;
+    $tp->site_id = $this->site_id;
+    $tp->parent_id = $this->id;
+    if (is_string($template)) {
+      $tp->template = $template;
+      return $tp;
+    }
+    foreach($template as $key => $value) {
+      $tp->$key = $value;
+    }
+    return $tp;
+  }
   public function get($key, $default = null) {
     return Arr::get($this->content, $key, $default);
   }

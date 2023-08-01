@@ -75,7 +75,7 @@
 @if(session('status'))
         <div class="text-center">{{ session('status') }}
 @endif
-          <form method="POST" action="/update-contact">
+          <form method="POST" action="/contacts">
             @csrf
             <div class="form-group">
               <label for="name">Full name</label>

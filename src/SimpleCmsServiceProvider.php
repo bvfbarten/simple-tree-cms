@@ -49,7 +49,7 @@ class SimpleCmsServiceProvider extends PluginServiceProvider
       ], 'simple-cms-config');
       $this->publishes([
         __DIR__.'/content/' => base_path('/content/'),
-        __DIR__.'/Filament/' => base_path('/Filament/'),
+        __DIR__.'/../PageTemplates' => base_path('app/Filament/PageTemplates'),
       ], 'simple-cms-content');
 
     }

@@ -7,11 +7,11 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 
-final class Home 
+final class Content
 {
     public static function title()
     {
-        return 'Home';
+        return 'Content';
     }
 
     public static function retreivedEvent($data) {
