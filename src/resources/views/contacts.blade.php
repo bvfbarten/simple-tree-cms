@@ -1,6 +1,5 @@
 <?php
 
-use Bvfbarten\SimpleCms\Http\Controllers\SimpleCmsController;
 use Illuminate\Support\Facades\Validator;
 
 function controller($controller, $page) {
