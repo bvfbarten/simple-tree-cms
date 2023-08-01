@@ -125,20 +125,18 @@ class TreePageResource extends Resource
         TextColumn::make('order'),
       ])
       ->filters([
-        SelectFilter::make('template')
-          ->options(function(){
-            $treePages = TreePage
-              ::groupBy('template')
-              ->get()
-              ->keyBy('id', 'template');
-            $rtn = [];
-            foreach($treePages as $counter => $treePage) {
-              $rtn[$counter] = $treePage->title;
-            }
-            return $rtn;
-          })
+        SelectFilter::make('TemplateFilter')
+          ->options(static::getTemplates())
           ->query(function (Builder $query, array $data): Builder {
-            return $query;
+            return $query
+              ->when(
+                isset($data['value']), 
+                function (Builder $query, $template) use ($data) : Builder
+                { 
+                  if($data['value']) {return $query->where('template', $data['value']);} 
+                  return $query; 
+                },
+              );
           }),
         Filter::make('parent_id')
           ->form([
