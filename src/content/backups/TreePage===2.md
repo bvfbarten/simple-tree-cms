@@ -14,7 +14,7 @@ site_id: 1
 activation_date: null
 deactivation_date: null
 slug: /
-template: App\Filament\PageTemplates\Home
+template: App\Filament\PageTemplates\Content
 content:
   is_home: 1
   site_id: 1

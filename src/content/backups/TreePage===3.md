@@ -14,7 +14,7 @@ site_id: 1
 activation_date: null
 deactivation_date: null
 slug: /test
-template: App\Filament\PageTemplates\Home
+template: App\Filament\PageTemplates\Content
 content:
   content: '<p>jk</p>'
   site_id: 1

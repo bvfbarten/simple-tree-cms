@@ -7,7 +7,5 @@ updated_at: 2023-07-06T08:10:01+00:00
 ---
 id: 2
 title: home
-domain: 127.0.0.1
-alternative_domains: {  }
 created_at: '2023-07-03T07:45:13.000000Z'
 updated_at: '2023-07-04T20:20:56.000000Z'
