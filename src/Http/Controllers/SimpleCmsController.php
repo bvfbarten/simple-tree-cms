@@ -15,7 +15,7 @@ class SimpleCmsController extends Controller
     $page = TreePage::findByPath($request->path());
     if ($page) {
       $templateName = 'simplecms::' . Str::slug(($page->template)::title());
-      if(View::exists($templateName) || config('simple-cms-config.show_templates')) {
+      if(View::exists($templateName) || config('simple-tree-cms-config.show_templates')) {
         $rtn = view($templateName, compact('page'))->render();
         if (is_callable('controller')) {
           $controllerReturn = controller($this, $page);

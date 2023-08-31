@@ -10,6 +10,7 @@ title: test
 parent_id: 2
 order: 1
 is_home: 0
+is_live: 1
 site_id: 1
 activation_date: null
 deactivation_date: null

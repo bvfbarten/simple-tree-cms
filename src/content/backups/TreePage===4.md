@@ -11,6 +11,7 @@ parent_id: 3
 order: 1
 is_home: 0
 site_id: 1
+is_live: 1
 activation_date: null
 deactivation_date: null
 slug: /new-child

@@ -1,5 +1,5 @@
 {
-    "name": "bvfbarten/simple-cms",
+    "name": "bvfbarten/simple-tree-cms",
     "type": "library",
     "require": {
         "php": "^8.1",

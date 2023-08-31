@@ -10,6 +10,7 @@ title: home
 parent_id: -1
 order: 1
 is_home: 1
+is_live: 1
 site_id: 1
 activation_date: null
 deactivation_date: null
@@ -47,7 +48,7 @@ content:
     -
       title: Templates
       image: null
-      content: "<p>Templates will be called directly at the directory vendor.simplecms.{template}.blade.php</p>\n<p>As an example, To override this template, create or update the file at resources/views/vendor/simplecms/home.blade.php\n"
+      content: "<p>Templates will be called directly at the directory vendor.simplecms.{template}.blade.php</p>\n<p>As an example, To override this template, create or update the file at resources/views/vendor/simplecms/content.blade.php\n"
       image_name: null
     -
       title: 'Yaml Dump'

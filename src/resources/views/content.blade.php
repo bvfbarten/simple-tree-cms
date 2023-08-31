@@ -52,7 +52,7 @@
         </button>
         <nav class="sidebar-menu">
           <ul>
-@foreach($page->content['sections'] as $counter => $section)
+@foreach($page->content['sections'] ?? [] as $counter => $section)
             <li><a href="#id-{{ $counter }}">{{ $section['title'] }}</a></li>
 @endforeach
           </ul>
@@ -60,7 +60,7 @@
       </div>
       <div class="col-9">
         <div class="main-content">
-@foreach($page->content['sections'] as $counter => $section)
+@foreach($page->content['sections'] ?? [] as $counter => $section)
           <h2 id="id-{{ $counter }}">{{ $section['title'] }}</h2>
           <?=$section['content'];?>
 @endforeach

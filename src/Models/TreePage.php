@@ -2,9 +2,9 @@
 
 namespace Bvfbarten\SimpleCms\Models;
 
-use Cache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -17,7 +17,7 @@ class TreePage extends Model
   use ModelTree;
   protected $table = "tree_pages";
   protected $connection = "simple_cms";
-  protected $fillable = ["id", "parent_id", "is_home", "title", "slug", "order", 'template', "content", "activation_date", "deactivation_date", "created_at", "updated_at", "last_edited_by_id"];
+  protected $fillable = ["id", "is_live", "parent_id", "is_home", "title", "slug", "order", 'template', "content", "activation_date", "deactivation_date", "created_at", "updated_at", "last_edited_by_id"];
   protected $casts = [
     'content' => 'array'
   ];
@@ -44,7 +44,6 @@ class TreePage extends Model
      }
     $this->content = Arr::undot($content);
     return $this;
-   
   }
   public function newTreePage($template) {
     $tp = new TreePage;
@@ -87,6 +86,10 @@ class TreePage extends Model
     }
     return implode('', array_reverse($url));
   }
+  public function TreePageIndexes(): HasMany
+  {
+    return $this->hasMany(TreePageIndex::class);
+  }
   public static function checkTemplateEvent($model, $eventName) {
     $event = explode(' ', $eventName);
     $event = explode(':', $event[0]);
@@ -110,6 +113,16 @@ class TreePage extends Model
         //dump($eventName, $data[0]->toArray());
       }
     });
+  }
+  public static function whereIndexed($index, $value = null) {
+    if (!is_array($index)) {
+      $index = [$index => $value];
+    }
+    $rtn = new self;
+    foreach($index as $key => $value) {
+      $rtn->where($key, $value);
+    }
+    return $rtn;
   }
   public static function booted() {
     static::saving(function (TreePage $model) {
@@ -135,7 +148,8 @@ class TreePage extends Model
         $model->slug = "/" . Str::slug($model->title);
         $count = self::where('slug', $model->slug)
           ->where('id', '!=', $model->id)
-          ->where('site_id', '=', $model->site_id)
+          ->where('site_id', $model->site_id)
+          ->where('parent_id', $model->parent_id)
           ->first();
         $counter = 2;
         while($count) {
@@ -154,9 +168,30 @@ class TreePage extends Model
         }
       }
       $model->content = $content;
+
       return $model;
     });
+    Static::saved(function(TreePage $model){
+      $class = new ReflectionClass($model->template);
+      if(($class->hasMethod('getIndexes'))) {
+        $template = $model->template;
+        foreach($template::getIndexes() as $index) {
+          $value = $model->get($index) ?? null;
+          $index = TreePageIndex::firstOrNew([
+            'template' =>$model->template,
+            'tree_page_id' => $model->id,
+            'key' => $index,
+            'value' => $value
+          ]);
+          $index->save();
+        }
+      }
+    });
   }
+  /*
+  select * from "tree_pages" where "tree_pages"."site_id" = 1 and "tree_pages"."site_id" is not null and "slug" = '/new-child' and exists (select * from "tree_pages" as "laravel_reserved_0" where "laravel_reserved_0"."id" = "tree_pages"."parent_id" and "slug" = '/test') and exists (select * from "tree_pages" as "laravel_reserved_1" where "laravel_reserved_1"."id" = "tree_pages"."parent_id" and "is_home" = 1) limit 1 
+*/
+
   static public function findByPath($path, $domain = null) {
     $request = app('request');
     $site = Site::findByDomain($domain);
@@ -167,13 +202,17 @@ class TreePage extends Model
     $pathArray = array_reverse($pathArray);
     $rtn = $site
       ->TreePages()
+      ->where('is_live', true)
       ->where('slug', '/' . array_shift($pathArray));
+    $hasLine = [];
     foreach($pathArray as $line) {
-      $rtn->whereHas('ParentNode', function($query) use ($line) {
+      $hasLine[] = "ParentNode";
+      $rtn->whereHas(implode('.', $hasLine), function($query) use ($line) {
         $query->where('slug', "/{$line}");
       });
     }
-    $rtn->whereHas('ParentNode', function($query) {
+    $hasLine[] = "ParentNode";
+    $rtn->whereHas(implode('.', $hasLine), function($query) {
       $query->where('is_home', true);
     });
     return $rtn->first();

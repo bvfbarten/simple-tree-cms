@@ -10,6 +10,7 @@ use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -45,6 +46,9 @@ class TreePageResource extends Resource
           })
           ->reactive()
           ->required() ,
+        Radio::make('is_live')
+          ->options([0 => 'not live',1 => 'live'])
+          ->default(0),
         TextInput::make('slug')
           ->extraInputAttributes(['readonly'=> true]),
         Hidden::make('is_slug_changed_manually')

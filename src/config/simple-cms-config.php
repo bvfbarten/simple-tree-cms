@@ -1,9 +1,9 @@
 <?php
 return [
   'show_templates' => env('APP_DEBUG'),
-  'simple-cms-db' => [
+  'simple-tree-cms-db' => [
     'driver' => 'sqlite',
-    'database' => database_path('simple-cms.sqlite'),
+    'database' => database_path('simple-tree-cms.sqlite'),
     'prefix' => '',
     'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
   ],

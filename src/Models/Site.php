@@ -15,7 +15,7 @@ class Site extends Model implements Dumpable
   use HasFactory;
   protected $connection = "simple_cms";
   protected $table = "sites";
-  protected $fillable = ["id", "title"];
+  protected $fillable = ["id", "title", 'has_home_page'];
 
   public function Domain() : HasOne
   {
@@ -68,13 +68,17 @@ class Site extends Model implements Dumpable
       }
     });
     static::created(function (Site $model) {
-      $treePage = $model->newTreePage([
-        'is_home' => true,
-        'slug' => '/',
-        'template' => 'App\Filament\PageTemplates\Home',
-        'title' => 'home'
-      ]);
-      $treePage->save();
+      if (!($model->has_home_page)){
+        $treePage = $model->newTreePage([
+          'is_home' => true,
+          'slug' => '/',
+          'template' => 'App\Filament\PageTemplates\Content',
+          'title' => 'home'
+        ]);
+        $treePage->save();
+        $model->has_home_page = true;
+        $model->save();
+      }
     });
   }
 }

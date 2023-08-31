@@ -5,7 +5,6 @@ namespace Bvfbarten\SimpleCms\Http\Controllers;
 use Illuminate\Http\Request;
 use Bvfbarten\SimpleCms\Models\TreePage;
 use Bvfbarten\SimpleCms\Filament\PageTemplates\Contact;
-use App\Filament\PageTemplates\Home as HomeTemplate;
 use Bvfbarten\SimpleCms\Models\Site;
 
 class SimpleCmsContactController extends Controller

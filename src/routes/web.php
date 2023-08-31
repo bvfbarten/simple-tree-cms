@@ -7,7 +7,7 @@ use App\Http\Controllers\PageTreeContactController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
-if( config('simple-cms-config.routing.allows-web-dumps')) {
+if( config('simple-tree-cms-config.routing.allows-web-dumps')) {
   Route::get('/to-dump', function(){
     return Artisan::call(ModelToDump::class, [
       '--force' => app('request')->get('force')
@@ -17,7 +17,7 @@ if( config('simple-cms-config.routing.allows-web-dumps')) {
     return Artisan::call(ModelFromDump::class); 
   });
 }
-Route::any(config('simple-cms-config.routing.cms-routes'), [
-  config('simple-cms-config.routing.cms-controller'),
+Route::any(config('simple-tree-cms-config.routing.cms-routes'), [
+  config('simple-tree-cms-config.routing.cms-controller'),
  'show' 
 ]);

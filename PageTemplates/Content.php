@@ -13,7 +13,6 @@ final class Content
     {
         return 'Content';
     }
-
     public static function retreivedEvent($data) {
       //dd($data);
     }

@@ -8,6 +8,13 @@ use Filament\Forms\Components\TextInput;
 
 final class Contact
 {
+  public static function getIndexes() : array {
+    return [
+      'name',
+      'email',
+      'phone'
+    ];
+  }
     public static function title()
     {
         return 'Contact';

@@ -103,6 +103,11 @@ class Backup extends Model
           )) {
             $newModel = new $model->class; 
             $newModel->id = $model->id;
+
+            if ($model->content['is_home'] ?? null) {
+            //this indicates that the model was already created by the site
+            continue;
+          }
           }
           $content = Yaml::parse($model->content);
           foreach($content as $key => $value) {
